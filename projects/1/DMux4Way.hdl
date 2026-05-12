@@ -8,6 +8,13 @@
  *                [0, in, 0, 0] if sel = 01
  *                [0, 0, in, 0] if sel = 10
  *                [0, 0, 0, in] if sel = 11
+ *
+ * Truth table:
+ * sel | outputs
+ * 00 | a = in
+ * 01 | b = in
+ * 10 | c = in
+ * 11 | d = in
  */
 CHIP DMux4Way {
     IN in, sel[2];

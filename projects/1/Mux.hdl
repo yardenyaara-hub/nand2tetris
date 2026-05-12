@@ -5,6 +5,17 @@
 /** 
  * Multiplexor:
  * if (sel = 0) out = a, else out = b
+ *
+ * Truth table:
+ * sel a b | out
+ * 0 0 0 | 0
+ * 0 0 1 | 0
+ * 0 1 0 | 1
+ * 0 1 1 | 1
+ * 1 0 0 | 0
+ * 1 0 1 | 1
+ * 1 1 0 | 0
+ * 1 1 1 | 1
  */
 CHIP Mux {
     IN a, b, sel;

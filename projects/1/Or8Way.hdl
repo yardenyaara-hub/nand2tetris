@@ -5,6 +5,10 @@
 /**
  * 8-way Or gate: 
  * out = in[0] Or in[1] Or ... Or in[7]
+ *
+ * Truth table:
+ * out = 1 if any input is 1
+ * out = 0 only if all inputs are 0
  */
 CHIP Or8Way {
     IN in[8];

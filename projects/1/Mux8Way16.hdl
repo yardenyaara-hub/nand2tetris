@@ -12,6 +12,17 @@
  *       f if sel = 101
  *       g if sel = 110
  *       h if sel = 111
+ *
+ * Truth table per bit:
+ * sel | out
+ * 000 | a[i]
+ * 001 | b[i]
+ * 010 | c[i]
+ * 011 | d[i]
+ * 100 | e[i]
+ * 101 | f[i]
+ * 110 | g[i]
+ * 111 | h[i]
  */
 CHIP Mux8Way16 {
     IN a[16], b[16], c[16], d[16],

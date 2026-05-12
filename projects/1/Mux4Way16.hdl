@@ -8,6 +8,13 @@
  *       b if sel = 01
  *       c if sel = 10
  *       d if sel = 11
+ *
+ * Truth table per bit:
+ * sel | out
+ * 00 | a[i]
+ * 01 | b[i]
+ * 10 | c[i]
+ * 11 | d[i]
  */
 CHIP Mux4Way16 {
     IN a[16], b[16], c[16], d[16], sel[2];

@@ -6,6 +6,13 @@
  * 16-bit And gate:
  * for i = 0, ..., 15:
  * out[i] = a[i] And b[i] 
+ *
+ * Truth table per bit:
+ * a[i] b[i] | out[i]
+ * 0 0 | 0
+ * 0 1 | 0
+ * 1 0 | 0
+ * 1 1 | 1
  */
 CHIP And16 {
     IN a[16], b[16];

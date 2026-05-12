@@ -12,6 +12,17 @@
  *                            [0,  0,  0,  0,  0, in,  0,  0] if sel = 101
  *                            [0,  0,  0,  0,  0,  0, in,  0] if sel = 110
  *                            [0,  0,  0,  0,  0,  0,  0, in] if sel = 111
+ *
+ * Truth table:
+ * sel | output
+ * 000 | a = in
+ * 001 | b = in
+ * 010 | c = in
+ * 011 | d = in
+ * 100 | e = in
+ * 101 | f = in
+ * 110 | g = in
+ * 111 | h = in
  */
 CHIP DMux8Way {
     IN in, sel[3];

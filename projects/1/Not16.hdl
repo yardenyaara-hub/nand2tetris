@@ -6,6 +6,11 @@
  * 16-bit Not gate:
  * for i = 0, ..., 15:
  * out[i] = Not(a[i])
+ *
+ * Truth table per bit:
+ * in[i] | out[i]
+ * 0 | 1
+ * 1 | 0
  */
 CHIP Not16 {
     IN in[16];
