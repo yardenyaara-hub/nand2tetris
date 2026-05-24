@@ -41,5 +41,27 @@ CHIP ALU {
         ng;      // if (out < 0)  equals 1, else 0
 
     PARTS:
-    //// Replace this comment with your code.
+    // zero the x input?
+    Mux16(a=x , b=false , sel=zx , out=x1);
+    // negate the x input?
+    Not16(in=x1 , out=notx1);
+    Mux16(a=x1 , b=notx1 , sel=nx , out=x2);
+    // zero the y input?
+    Mux16(a=y , b=false , sel=zy , out=y1);
+    // negate the y input?
+    Not16(in=y1 , out=noty1);
+    Mux16(a=y1 , b=noty1 , sel=ny , out=y2);
+    // compute (out = x + y) or (out = x & y)?
+    Add16(a=x2 , b=y2 , out=addxy);
+    And16(a=x2 , b=y2 , out=andxy);
+    Mux16(a=andxy , b=addxy , sel=f , out=fxy);
+    // negate the out output?
+    Not16(in=fxy , out=notfxy);
+    Mux16(a=fxy , b=notfxy , sel=no , out=out, out[15]=ng, out[0..7]=outhalf1, out[8..15]=outhalf2);
+    // ng is now the sign bit (out[15]), but we still need to compute zr
+    // output is zero? happens when all bits of out are zero, i.e. when all bits of outhalf1 and outhalf2 are zero
+    Or8Way(in=outhalf1 , out=orhalf1);
+    Or8Way(in=outhalf2 , out=orhalf2);
+    Or(a=orhalf1 , b=orhalf2 , out=outnonzero );
+    Not(in=outnonzero, out=zr);
 }
