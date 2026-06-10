@@ -32,5 +32,46 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-	//// Replace this comment with your code.
+        // Decode instruction
+        // The instruction is either an A-instruction or a C-instruction, determined by the opcode at the most significant bit (MSB), instruction[15].
+        // An A-instruction contains has an opcode of 0 followed by a 15-bit address value that should be loaded into the A register.
+        // The C-instruction should be decoded into multiple fields conneting to different components in the CPU.
+        And(a=instruction[15], b=instruction[0], out=jumpIfGreater);
+        And(a=instruction[15], b=instruction[1], out=jumpIfEqual);
+        And(a=instruction[15], b=instruction[2], out=jumpIfLess);
+        // Bits 3 to 5 bits are the destination bits
+        And(a=instruction[15], b=instruction[3], out=writeM);
+        And(a=instruction[15], b=instruction[4], out=writeD);
+        And(a=instruction[15], b=instruction[5], out=writeA);
+        // Bits 6 to 11 are the computation bits
+        And(a=instruction[15], b=instruction[6], out=no);
+        And(a=instruction[15], b=instruction[7], out=f);
+        And(a=instruction[15], b=instruction[8], out=ny);
+        And(a=instruction[15], b=instruction[9], out=zy);
+        And(a=instruction[15], b=instruction[10], out=nx);
+        And(a=instruction[15], b=instruction[11], out=zx);
+        // Bits 12 decide whether to use the A register value or the M value as the ALU's y input
+        And(a=instruction[15], b=instruction[12], out=useM);
+
+        Mux16(a=instruction , b=aluOut , sel=instruction[15] , out=address);
+        Not(in=instruction[15], out=isAInstruction);
+        Or(a=writeA, b=isAInstruction, out=loadA);
+        ARegister(in=address , load=loadA , out=outARegister, out[0..14]=addressM);
+        Mux16(a=outARegister , b=inM , sel=useM , out=y );
+        DRegister(in=aluOut , load=writeD , out=x );
+        ALU(x=x , y=y , zx=zx , nx=nx , zy=zy , ny=ny , f=f , no=no , out=outM, out=aluOut , zr=zr , ng=ng);
+        // determine whether ALU's output is positive
+        Not(in=ng, out=notNg);
+        Not(in=zr, out=notZr);
+        And(a=notNg, b=notZr, out=pos);
+       // conditional jump
+        And(a=jumpIfGreater, b=pos, out=greaterCond);
+        And(a=jumpIfEqual, b=zr, out=equalCond);
+        And(a=jumpIfLess, b=ng, out=lessCond);
+
+        // If any of the jump conditions is true, jump to the address specified in the A register.
+        Or(a=greaterCond, b=equalCond, out=greaterOrEqual);
+        Or(a=greaterOrEqual, b=lessCond, out=jump);
+  
+        PC(in=outARegister , load=jump , inc=true , reset=reset , out[0..14]=pc );
 }
